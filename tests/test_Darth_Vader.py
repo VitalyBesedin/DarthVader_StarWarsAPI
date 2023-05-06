@@ -29,12 +29,30 @@ class TestLoadListCharacters:
         # "https://swapi.dev/api/films/3/",
         # "https://swapi.dev/api/films/6/"
         # ])
+        """Вытягиваем список фильмов в которых был персонаж Дарт Вейдер"""
         list_films = Checking.upload_json_value(result_get, 'films')
         #print(list_films)
         print(*list_films, sep='\n')
         person_name = Checking.upload_json_value(result_get, 'name')
-        # print(list_films)
         print(person_name)
+        """Делаем мосив концов ссылок на фильмы для подстановки в метод"""
+        list_film_names = [list_films[i][-9:] for i in range(len(list_films))]
+        print(*list_film_names, sep='\n')
+        """Вытягиваем перечень ссылок на персонажей по сслыке на фильм"""
+
+        result_get = StarWarsApi.get_upload_character(list_film_names[0])
+        """Делаем массив с концами ссылок персонажей для подстановки в готовый метод"""
+        list_liks_characters = [Checking.upload_json_value(result_get, 'characters')[i][-10:]
+                                for i in range(len(Checking.upload_json_value(result_get, 'characters')))]
+        print(*list_liks_characters, sep='\n')
+
+        """Вытягиваем имена персонажей имея список концов ссылок"""
+
+        person_name = Checking.upload_json_value(result_get, 'name')
+
+
+
+
 
 
 
