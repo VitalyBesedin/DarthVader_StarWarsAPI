@@ -50,16 +50,16 @@ class TestLoadListCharacters:
 
         print(*list_links_characters, sep='\n')
 
-        # """Вытягиваем имена персонажей имея список концов ссылок"""
+        """Вытягиваем имена персонажей имея список концов ссылок"""
+
+        result_get = StarWarsApi.get_upload_character(list_links_characters[0])
+        # list_people_names= [Checking.upload_json_value(result_get, 'name')[i]
+        #              for i in range(len(Checking.upload_json_value(result_get, 'name')))]
         #
-        # result_get = StarWarsApi.get_upload_character(list_links_characters[0])
-        # # list_people_names= [Checking.upload_json_value(result_get, 'name')[i]
-        # #              for i in range(len(Checking.upload_json_value(result_get, 'name')))]
-        # #
-        # # print(*list_people_names)
-        #
-        # person_name = Checking.upload_json_value(result_get, 'name')
-        # print(person_name)
+        # print(*list_people_names)
+
+        person_name = Checking.upload_json_value(result_get, 'name')
+        print(person_name)
 
 
 
