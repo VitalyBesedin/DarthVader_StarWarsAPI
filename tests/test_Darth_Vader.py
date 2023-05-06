@@ -23,7 +23,21 @@ class TestLoadListCharacters:
         # print(list(token))
         # Checking.check_json_token(result_get, ['location', 'accuracy', 'name', 'phone_number', 'address',
         #                                        'types', 'website', 'language'])
-        # Checking.check_json_value(result_get, 'address', '29, side layout, cohen 09')
+        # list_films = Checking.check_json_value(result_get, 'films', [
+        # "https://swapi.dev/api/films/1/",
+        # "https://swapi.dev/api/films/2/",
+        # "https://swapi.dev/api/films/3/",
+        # "https://swapi.dev/api/films/6/"
+        # ])
+        list_films = Checking.upload_json_value(result_get, 'films')
+        #print(list_films)
+        print(*list_films, sep='\n')
+        person_name = Checking.upload_json_value(result_get, 'name')
+        # print(list_films)
+        print(person_name)
+
+
+
 
         # print("Method PUT")
         # result_put = GoogleMapsApi.put_new_place(place_id)

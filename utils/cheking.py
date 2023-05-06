@@ -10,6 +10,17 @@ class Checking:
         assert status_code == result.status_code
         print("Successfully!!! Status code:", result.status_code)
 
+    """Method for loading values from requested fields"""
+
+    @staticmethod
+    def upload_json_value(result, field_name):
+        check = result.json()
+        check_info = check.get(field_name)
+        # assert check_info == expected_value
+        # print(f'The value of the {field_name} field is correct!!!')
+        """ return value"""
+        return check_info
+
     """Method for validating required fields in a request response"""
     @staticmethod
     def check_json_token(result, expected_value):
@@ -24,6 +35,8 @@ class Checking:
         check_info = check.get(field_name)
         assert check_info == expected_value
         print(f'The value of the {field_name} field is correct!!!')
+        """ return value"""
+        return check_info
 
     """Method for checking the values of required fields in the request response for a given word"""
 
