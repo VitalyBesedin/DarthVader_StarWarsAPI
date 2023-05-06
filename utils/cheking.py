@@ -18,6 +18,7 @@ class Checking:
         check_info = check.get(field_name)
         # assert check_info == expected_value
         # print(f'The value of the {field_name} field is correct!!!')
+        print("Type:", type(check_info))  # test Type
         """ return value"""
         return check_info
 
