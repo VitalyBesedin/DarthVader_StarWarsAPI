@@ -36,30 +36,54 @@ class TestLoadListCharacters:
         person_name = Checking.upload_json_value(result_get, 'name')
         print(person_name)
         """Делаем мосив концов ссылок на фильмы для подстановки в метод"""
-        list_film_names = [list_films[i][-9:] for i in range(len(list_films))]
+        list_film_names = [list_films[i][21:] for i in range(len(list_films))]
         print(*list_film_names, sep='\n')
 
 
         """Вытягиваем перечень ссылок на персонажей по сслыке на фильм"""
+        links_characters = []
+        for i in range(len(list_film_names)):
 
-        result_get = StarWarsApi.get_upload_character(list_film_names[0])
+            result_get = StarWarsApi.get_upload_character(list_film_names[i])
 
-        """Делаем массив с концами ссылок персонажей для подстановки в готовый метод"""
-        list_links_characters = [Checking.upload_json_value(result_get, 'characters')[i][-10:]
-                                for i in range(len(Checking.upload_json_value(result_get, 'characters')))]
+            """Делаем массив с концами ссылок персонажей для подстановки в готовый метод"""
+            list_links_characters = [Checking.upload_json_value(result_get, 'characters')[i][21:]
+                                    for i in range(len(Checking.upload_json_value(result_get, 'characters')))]
 
-        print(*list_links_characters, sep='\n')
+            links_characters.extend(list_links_characters)
+        links_characters.sort()
+        """Очистка списка от дублей"""
+        itog = [links_characters[0]]
+        itog.extend([links_characters[i] for i in range(1, len(links_characters))
+                     if links_characters[i] != links_characters[i-1]])
+
+        #print(*links_characters, sep='\n')
+        print(*itog, sep='\n')
+
+
+
+
 
         """Вытягиваем имена персонажей имея список концов ссылок"""
 
-        result_get = StarWarsApi.get_upload_character(list_links_characters[0])
-        # list_people_names= [Checking.upload_json_value(result_get, 'name')[i]
-        #              for i in range(len(Checking.upload_json_value(result_get, 'name')))]
-        #
-        # print(*list_people_names)
+        for i in range(len(itog)):
+            result_get = StarWarsApi.get_upload_character(itog[i])
+            person_name = Checking.upload_json_value(result_get, 'name')
+            fw = open('test.txt', "a")
+            fw.write(person_name + '\n')
+            fw.close()
 
-        person_name = Checking.upload_json_value(result_get, 'name')
-        print(person_name)
+        # result_get = StarWarsApi.get_upload_character(list_links_characters[0])
+        # # list_people_names= [Checking.upload_json_value(result_get, 'name')[i]
+        # #              for i in range(len(Checking.upload_json_value(result_get, 'name')))]
+        # #
+        # # print(*list_people_names)
+        #
+        # person_name = Checking.upload_json_value(result_get, 'name')
+        # print(person_name)
+        # list_people_names = [Checking.upload_json_value(StarWarsApi.get_upload_character(itog[i], 'name')
+        #                                                 for i in range(len(itog))]
+        #
 
 
 
