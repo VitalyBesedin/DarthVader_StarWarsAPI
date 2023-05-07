@@ -1,123 +1,45 @@
-import json
 from utils.cheking import Checking
 from utils.api import StarWarsApi
 
 
 """Uploading a list of characters from films with Darth Vader to a file"""
+
+
 class TestLoadListCharacters:
     def test_upload_list(self):
 
-        # print("Method POST")
-        # result_post = GoogleMapsApi.create_new_place()
-        # check_post = result_post.json()
-        # place_id = check_post.get("place_id")
-        # Checking.check_status_code(result_post, 200)
-        # Checking.check_json_token(result_post, ['status', 'place_id', 'scope', 'reference', 'id'])
-        # Checking.check_json_value(result_post, 'status', 'OK')
-
-        print("Method GET")
+        print("Method upload list/GET")
         people = '/people/4/'
-        result_get = StarWarsApi.get_upload_character(people)
+        result_get = StarWarsApi.get_upload_data(people)
         Checking.check_status_code(result_get, 200)
-        # token = json.loads(result_get.text)   #  getting a list of fields
-        # print(list(token))
-        # Checking.check_json_token(result_get, ['location', 'accuracy', 'name', 'phone_number', 'address',
-        #                                        'types', 'website', 'language'])
-        # list_films = Checking.check_json_value(result_get, 'films', [
-        # "https://swapi.dev/api/films/1/",
-        # "https://swapi.dev/api/films/2/",
-        # "https://swapi.dev/api/films/3/",
-        # "https://swapi.dev/api/films/6/"
-        # ])
-        """Вытягиваем список фильмов в которых был персонаж Дарт Вейдер"""
-        list_films = Checking.upload_json_value(result_get, 'films')
-        #print(list_films)
+        Checking.check_json_value(result_get, 'name', 'Darth Vader')
+        """Pull out the list of films in which the character Darth Vader was"""
+        list_films = StarWarsApi.upload_json_value(result_get, 'films')
         print(*list_films, sep='\n')
-        person_name = Checking.upload_json_value(result_get, 'name')
-        print(person_name)
-        """Делаем мосив концов ссылок на фильмы для подстановки в метод"""
+        """Making a list of movie resources"""
         list_film_names = [list_films[i][21:] for i in range(len(list_films))]
-        print(*list_film_names, sep='\n')
-
-
-        """Вытягиваем перечень ссылок на персонажей по сслыке на фильм"""
+        print(*list_film_names, sep='\n')  # print an array of resource links
+        """Pulling the list of characters resources from the lists of movie"""
         links_characters = []
         for i in range(len(list_film_names)):
-
-            result_get = StarWarsApi.get_upload_character(list_film_names[i])
-
-            """Делаем массив с концами ссылок персонажей для подстановки в готовый метод"""
-            list_links_characters = [Checking.upload_json_value(result_get, 'characters')[i][21:]
-                                    for i in range(len(Checking.upload_json_value(result_get, 'characters')))]
-
+            result_get = StarWarsApi.get_upload_data(list_film_names[i])
+            list_links_characters = [StarWarsApi.upload_json_value(result_get, 'characters')[i][21:] for i in
+                                     range(len(StarWarsApi.upload_json_value(result_get, 'characters')))]
             links_characters.extend(list_links_characters)
-        links_characters.sort()
-        """Очистка списка от дублей"""
-        itog = [links_characters[0]]
-        itog.extend([links_characters[i] for i in range(1, len(links_characters))
-                     if links_characters[i] != links_characters[i-1]])
-
-        #print(*links_characters, sep='\n')
-        print(*itog, sep='\n')
-
-
-
-
-
-        """Вытягиваем имена персонажей имея список концов ссылок"""
-
-        for i in range(len(itog)):
-            result_get = StarWarsApi.get_upload_character(itog[i])
-            person_name = Checking.upload_json_value(result_get, 'name')
-            fw = open('test.txt', "a")
+        links_characters.sort()  # Sorting for preparation of removal of duplicates
+        """Clean up the list of duplicates"""
+        cleaned_list_links = [links_characters[0]]
+        cleaned_list_links.extend([links_characters[i] for i in range(1, len(links_characters)) if links_characters[i]
+                                   != links_characters[i-1]])
+        print("List of unique links", *cleaned_list_links, sep='\n')
+        """Pulling the names of the characters"""
+        for i in range(len(cleaned_list_links)):
+            result_get = StarWarsApi.get_upload_data(cleaned_list_links[i])
+            person_name = StarWarsApi.upload_json_value(result_get, 'name')
+            """Putting character names in a file"""
+            fw = open('characters.txt', "a")
             fw.write(person_name + '\n')
             fw.close()
 
-        # result_get = StarWarsApi.get_upload_character(list_links_characters[0])
-        # # list_people_names= [Checking.upload_json_value(result_get, 'name')[i]
-        # #              for i in range(len(Checking.upload_json_value(result_get, 'name')))]
-        # #
-        # # print(*list_people_names)
-        #
-        # person_name = Checking.upload_json_value(result_get, 'name')
-        # print(person_name)
-        # list_people_names = [Checking.upload_json_value(StarWarsApi.get_upload_character(itog[i], 'name')
-        #                                                 for i in range(len(itog))]
-        #
-
-
-
-
-
-
-
-        # print("Method PUT")
-        # result_put = GoogleMapsApi.put_new_place(place_id)
-        # Checking.check_status_code(result_put, 200)
-        # Checking.check_json_token(result_put, ['msg'])
-        # Checking.check_json_value(result_put, 'msg', 'Address successfully updated')
-        #
-        #
-        # print("Method GET PUT")
-        # result_get = GoogleMapsApi.get_new_place(place_id)
-        # Checking.check_status_code(result_get, 200)
-        # Checking.check_json_token(result_get, ['location', 'accuracy', 'name', 'phone_number', 'address',
-        #                                        'types', 'website', 'language'])
-        # Checking.check_json_value(result_get, 'address', '100 Lenina street, RU')
-        #
-        # print("Method DELETE")
-        # result_delete = GoogleMapsApi.delete_new_place(place_id)
-        # Checking.check_status_code(result_delete, 200)
-        # Checking.check_json_token(result_delete, ['status'])
-        # Checking.check_json_value(result_delete, 'status', 'OK')
-        #
-        #
-        # print("Method GET DELETE")
-        # result_get = GoogleMapsApi.get_new_place(place_id)
-        # Checking.check_status_code(result_get, 404)
-        # Checking.check_json_token(result_get, ['msg'])
-        # Checking.check_json_value(result_get, 'msg', "Get operation failed, looks like place_id  doesn't exists")
-        # Checking.check_json_search_word_in_value(result_get, 'msg', 'failed')
-        #
-
-        print("Testing uploading a list of characters from films with Darth Vader to a file has been completed successfully!!!")
+        print("Testing uploading a list of characters from films with Darth Vader to a file has been completed "
+              "successfully!!!")
